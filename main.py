@@ -1,50 +1,32 @@
 #TG bot
 import asyncio
-from aiogram import Bot, Dispatcher, types
-from dotenv import load_dotenv
-from os import getenv
-from aiogram.filters import Command
+from aiogram import types
 import logging
-import random
 from pathlib import Path
-
-load_dotenv()
-bot = Bot(token=getenv('BOT_TOKEN'))
-dp = Dispatcher()
-
-
+from bot import bot, dp
+from handlers.picture import pic_router
+from handlers.start import start_router
+from handlers.echo import echo_router
+from handlers.categories import categories_router
+# from handlers.free_lesson import free_lesson_form_router
 images_directory = Path('/Users/bektur/Downloads/cars sample')
-
-
-@dp.message(Command("random_pic"))
-async def send_random_pic(message: types.Message):
-    ca = []
-    p = Path('/Users/bektur/Downloads/cars sample')
-    for c in p.iterdir():
-        ca.append(c)
-    file = types.FSInputFile(random.choice(ca))
-    await message.answer_photo(
-        photo=file,
-    )
-
-@dp.message(Command('start'))
-async def start(message: types.Message):
-    await message.answer(f'Привет, {message.from_user.full_name}')
-
-@dp.message()
-async  def echo(message: types.Message):
-    await message.reply(
-        f'{message.text}, {message.from_user.first_name}, {message.from_user.username}'
-    )
 
 async def main():
     await bot.set_my_commands([
         types.BotCommand(command='start', description='начало'),
-        types.BotCommand(command='random_pic', description='случайная картинка')
+        types.BotCommand(command='random_pic', description='случайная картинка'),
+        types.BotCommand(command='categories', description='модель авто'),
+        # types.BotCommand(command='free lesson', description= 'Записаться на открытый урок')
     ])
+
+    dp.include_router(pic_router)
+    dp.include_router(categories_router)
+    dp.include_router(start_router)
+    # dp.include_router(free_lesson_form_router)
+    dp.include_router(echo_router)
+
     #обрабатываем все сообщения
     await dp.start_polling(bot)
-
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
