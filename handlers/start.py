@@ -10,7 +10,8 @@ async def start(message: types.Message):
             [types.InlineKeyboardButton(text='Главная страница', callback_data='main_page')],
             [types.InlineKeyboardButton(url='https://go.2gis.com/mrucvi', text='Адрес'),
             types.InlineKeyboardButton(text='Контакты', callback_data='contacts')],
-        [types.InlineKeyboardButton(text='О нас', callback_data='about'),]
+            [types.InlineKeyboardButton(text='О нас', callback_data='about'),],
+            [types.InlineKeyboardButton(text='Консультация', callback_data='consult')]
         ]
     )
     await message.answer(f'Привет, {message.from_user.full_name}', reply_markup=keyboard)
@@ -29,5 +30,9 @@ async def about_us(callback: types.CallbackQuery):
 @start_router.callback_query(F.data == 'main_page')
 async def main_page_callback(callback: types.CallbackQuery):
     await callback.message.answer("Вы нажали кнопку 'Главная страница. Чтобы перейти нажмите /categories'")
+
+@start_router.callback_query(F.data == 'consult')
+async def consulting(callback: types.CallbackQuery):
+    await callback.message.answer('Чтобы записаться на консультацию нажмите /consultation')
 
 

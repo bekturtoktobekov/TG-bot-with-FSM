@@ -8,7 +8,7 @@ from handlers.picture import pic_router
 from handlers.start import start_router
 from handlers.echo import echo_router
 from handlers.categories import categories_router
-# from handlers.free_lesson import free_lesson_form_router
+from handlers.cons import consultation
 images_directory = Path('/Users/bektur/Downloads/cars sample')
 
 async def main():
@@ -16,13 +16,13 @@ async def main():
         types.BotCommand(command='start', description='начало'),
         types.BotCommand(command='random_pic', description='случайная картинка'),
         types.BotCommand(command='categories', description='модель авто'),
-        # types.BotCommand(command='free lesson', description= 'Записаться на открытый урок')
+        types.BotCommand(command='consultation', description= 'Записаться на консультацию')
     ])
 
     dp.include_router(pic_router)
-    dp.include_router(categories_router)
     dp.include_router(start_router)
-    # dp.include_router(free_lesson_form_router)
+    dp.include_router(consultation)
+    dp.include_router(categories_router)
     dp.include_router(echo_router)
 
     #обрабатываем все сообщения

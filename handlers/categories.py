@@ -1,20 +1,22 @@
 from aiogram import Router,F, types
 from aiogram.filters import Command
+from keyboard.keyboard_category import category_kb
 
 categories_router = Router()
 
 @categories_router.message(Command('categories'))
 async def show_categories(message: types.Message):
-    keyboard = types.ReplyKeyboardMarkup(
-        keyboard = [
-            [types.KeyboardButton(text='Sedan')],
-            [types.KeyboardButton(text='SUV'),
-            types.KeyboardButton(text='Van')],
-            [types.KeyboardButton(text='Hatchback')]
-        ],
-        resize_keyboard=True
-    )
-    await message.answer('Выберите категорию', reply_markup = keyboard)
+
+    # keyboard = types.ReplyKeyboardMarkup(
+    #     keyboard = [
+    #         [types.KeyboardButton(text='Sedan')],
+    #         [types.KeyboardButton(text='SUV'),
+    #         types.KeyboardButton(text='Van')],
+    #         [types.KeyboardButton(text='Hatchback')]
+    #     ],
+    #     resize_keyboard=True
+    # )
+    await message.answer('Выберите категорию', reply_markup = category_kb())
 
 
 @categories_router.message(F.text == 'Sedan')
